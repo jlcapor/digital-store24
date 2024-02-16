@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -16,17 +16,17 @@ enum Role {
 }
 
 model Account {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId            String   @map("user_id") @db.Uuid
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String   @db.ObjectId
   type              String
   provider          String
   providerAccountId String   @map("provider_account_id")
-  refresh_token     String?  @db.Text
-  access_token      String?  @db.Text
+  refresh_token     String?  @db.String
+  access_token      String?  @db.String
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?  @db.Text
+  id_token          String?  @db.String
   session_state     String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @default(now()) @updatedAt
@@ -37,9 +37,9 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  sessionToken String   @unique @map("session_token") @db.Text
-  userId       String   @map("user_id") @db.Uuid
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique @map("session_token") @db.String
+  userId       String   @db.ObjectId
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
@@ -49,7 +49,7 @@ model Session {
 }
 
 model User {
-  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
   name           String?
   email          String?   @unique
   emailVerified  DateTime? @map("email_verified")
@@ -60,12 +60,13 @@ model User {
   updatedAt      DateTime  @default(now()) @updatedAt
   accounts       Account[]
   sessions       Session[]
+  reviews        Review[]
 
   @@map("users")
 }
 
 model VerificationToken {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   identifier String
   token      String   @unique
   expires    DateTime
@@ -77,42 +78,62 @@ model VerificationToken {
 }
 
 model Category {
-  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name          String        @unique
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  title         String        @unique
+  description   String?
   slug          String?
   image         String?
   subcategories Subcategory[]
-  products      Product[]
 
   @@map("categories")
 }
 
 model Subcategory {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
   description String?
   slug        String?
   image       String?
   category    Category  @relation(fields: [categoryId], references: [id])
-  categoryId  String    @db.Uuid
+  categoryId  String    @db.ObjectId
   products    Product[]
 
   @@map("subcategories")
 }
 
 model Product {
-  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   description   String
   price         Float
   stock         Int
   inStock       Boolean
+  subcategoryId String       @db.ObjectId
   subcategory   Subcategory? @relation(fields: [subcategoryId], references: [id])
-  Category      Category?    @relation(fields: [categoryId], references: [id])
-  subcategoryId String       @db.Uuid
-  categoryId    String       @db.Uuid
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @default(now()) @updatedAt
+  images        Image[]
+  reviews       Review[]
 
   @@map("products")
+}
+
+model Image {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  url       String
+  productId String  @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("reviews")
 }

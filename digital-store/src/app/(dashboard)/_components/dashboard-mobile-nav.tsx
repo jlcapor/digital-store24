@@ -13,7 +13,7 @@ interface DashboardMobileNavProps {
 }
 export function DashboardMobileNav({ items }: DashboardMobileNavProps) {
     const pathname = usePathname();
-  const searchParams = useSearchParams();
+    const searchParams = useSearchParams();
     const [isOpen, setIsOpen] = useState(false);
     const openMobileMenu = () => setIsOpen(true);
     const closeMobileMenu = () => setIsOpen(false);
@@ -38,7 +38,7 @@ export function DashboardMobileNav({ items }: DashboardMobileNavProps) {
        variant="ghost"
        onClick={openMobileMenu}
        aria-label="Open mobile menu"
-      className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden mt-4"
+       className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden mt-4"
      >
         <AlignJustify  className="h-6 w-6"/>
       </Button>
@@ -64,34 +64,34 @@ export function DashboardMobileNav({ items }: DashboardMobileNavProps) {
              leaveFrom="translate-x-0"
              leaveTo="translate-x-[-100%]"
             >
-                <Dialog.Panel className="fixed bottom-0 left-0 right-0 top-0 flex h-full w-full flex-col bg-white pb-6 dark:bg-black">
-                    <div className="p-4">
-                        <div className="flex items-center justify-between">
-                            <span className="text-lg font-semibold">{siteConfig.name}</span>
-                            <button
-                                className="mb-4 flex h-11 w-11 items-center justify-center rounded-md border border-neutral-200 text-black transition-colors dark:border-neutral-700 dark:text-white"
-                                onClick={closeMobileMenu}
-                                aria-label="Close mobile menu"
-                            >
-                                <X className="h-6" />
-                            </button>
+              <Dialog.Panel className="fixed bottom-0 left-0 right-0 top-0 flex h-full w-full flex-col bg-white pb-6 dark:bg-black">
+                <div className="p-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-semibold">{siteConfig.name}</span>
+                      <button
+                        className="mb-4 flex h-11 w-11 items-center justify-center rounded-md border border-neutral-200 text-black transition-colors dark:border-neutral-700 dark:text-white"
+                          onClick={closeMobileMenu}
+                          aria-label="Close mobile menu"
+                        >
+                          <X className="h-6" />
+                          </button>
                         </div>
                         {items.length ? (
                             <ul className="flex w-full flex-col px-4">
-                                {items.map((item) => (
-                                    <li
-                                        className="py-2 px-3 text-xl text-black transition-colors hover:text-neutral-500 dark:text-white"
-                                        key={item.title}
-                                    >
-                                        <Link href={item.href} onClick={closeMobileMenu}>
-                                        {item.title}
-                                        </Link>
+                              {items.map((item) => (
+                                <li
+                                  className="py-2 px-3 text-xl text-black transition-colors hover:text-neutral-500 dark:text-white"
+                                  key={item.title}
+                                >
+                                  <Link href={item.href} onClick={closeMobileMenu}>
+                                    {item.title}
+                                      </Link>
                                     </li>
                                 ))}
                             </ul>
                         ) : null}
                     </div>
-                </Dialog.Panel>
+              </Dialog.Panel>
             </Transition.Child>
         </Dialog>
       </Transition>

@@ -1,8 +1,6 @@
-import { ModeToggle } from "@/components/layouts/mode-toggle";
+import { redirect } from "next/navigation";
+import getCurrentUser from "@/lib/session";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import getCurrentUser from "@/lib/session"
-import Link from "next/link";
-import { notFound } from "next/navigation";
 import { DashboardSidebarNav } from "../_components/dashboard-sidebar-nav";
 import { dashboardConfig } from "@/config/dashboard";
 import SiteHeader from "@/components/layouts/site-header";
@@ -14,7 +12,7 @@ interface DashboardLayoutProps {
 export default async function DashboardLayout({children}: DashboardLayoutProps) {
     const currentUser = await getCurrentUser();
     if (!currentUser) {
-        return notFound()
+        redirect("/login")
     }
 
     return (

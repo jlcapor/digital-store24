@@ -49,27 +49,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body  className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable,
-          fontHeading.variable
-        )}>
-          <Providers>
-            <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-              >
-                {children}
-                <ScrollToTopButton />
-                <TailwindIndicator />
-            </ThemeProvider>
-          </Providers>
-          <Analytics />
-          <Toaster />
-      </body>
-    </html>
+    <Providers>
+      <html lang="en" suppressHydrationWarning>
+        <body  className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable,
+            fontHeading.variable
+          )}>
+            
+              <ThemeProvider
+                  attribute="class"
+                  defaultTheme="system"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  {children}
+                  <ScrollToTopButton />
+                  <TailwindIndicator />
+              </ThemeProvider>
+            <Analytics />
+            <Toaster />
+        </body>
+      </html>
+    </Providers>
   );
 }
