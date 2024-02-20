@@ -12,7 +12,8 @@ import MainNav from './main-nav';
 import { ProductSearch } from '../product-search';
 import MobileNavMenu from './mobile-nav-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { AlignRight, UserRound } from 'lucide-react';
+import { AlignRight, User, UserIcon, UserRound } from 'lucide-react';
+import AuthForm from '../auth/AuthForm';
 
 
 interface SiteHeaderProps {
@@ -91,15 +92,9 @@ const SiteHeader = ({ currentUser }: SiteHeaderProps) => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 ) :(
-                  <Link href="/login">
-                    <Button variant="ghost" className="relative h-8 w-8 rounded" size="icon">
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback className="bg-transparent">
-                          <UserRound className="h-6 w-6" />
-                        </AvatarFallback>
-                      </Avatar>
-                    </Button>
-                  </Link>
+                  <AuthForm>
+                    <UserIcon className="h-6 w-6" />
+                  </AuthForm>
                 )}
             </nav>
           </div>
